@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slow Pitch Softball Rules Quiz</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#1a3a1a;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:16px;background-image:repeating-linear-gradient(0deg,transparent,transparent 38px,rgba(255,255,255,0.03) 38px,rgba(255,255,255,0.03) 40px),repeating-linear-gradient(90deg,transparent,transparent 38px,rgba(255,255,255,0.03) 38px,rgba(255,255,255,0.03) 40px)}
+.card{background:#0d2137;border-radius:6px;box-shadow:0 8px 40px rgba(0,0,0,0.4);width:100%;max-width:680px;overflow:hidden;margin:10px 0 40px}
+.header{background:linear-gradient(135deg,#8b1a1a,#c0392b,#8b1a1a);padding:24px 28px 20px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border:3px solid rgba(255,255,255,0.1);border-radius:50%}
+.header h1{font-size:1.8rem;font-weight:700;color:#fff;letter-spacing:1px;text-transform:uppercase;line-height:1.1;position:relative;z-index:1}
+.header h1 span{color:#d4a017}
+.header p{color:rgba(255,255,255,0.7);font-size:0.85rem;margin-top:5px;position:relative;z-index:1}
+.body{padding:24px 28px 28px}
+/* HOME */
+.top-bar{display:flex;gap:8px;margin-bottom:14px}
+.mode-btn{flex:1;border:1px solid rgba(255,255,255,0.15);background:none;border-radius:5px;cursor:pointer;padding:10px 6px;text-align:center;transition:all .15s;color:#f0ead8}
+.mode-btn:hover{background:rgba(255,255,255,0.06)}
+.mode-btn.ae{background:rgba(39,174,96,0.12);border-color:#27ae60}
+.mode-btn.am{background:rgba(212,160,23,0.12);border-color:#d4a017}
+.mode-btn.ah{background:rgba(192,57,43,0.12);border-color:#c0392b}
+.mode-icon{display:block;font-size:18px;margin-bottom:4px}
+.mode-name{font-size:12px;font-weight:600;display:block;text-transform:uppercase;letter-spacing:.5px}
+.mode-desc{font-size:10px;color:rgba(255,255,255,0.55);display:block;margin-top:3px;line-height:1.3}
+.home-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:18px}
+.home-title{font-size:16px;font-weight:600;margin-bottom:5px;color:#f0ead8}
+.home-sub{font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:5px;line-height:1.5}
+.home-count{font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:14px;font-style:italic}
+.start-btn{width:100%;border:none;border-radius:5px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;color:#fff;letter-spacing:.5px;text-transform:uppercase}
+.se{background:#27ae60}.se:hover{background:#1e8449}
+.sm{background:#b7770d}.sm:hover{background:#8a5a0a}
+.sh{background:#a93226}.sh:hover{background:#7b241c}
+/* QUIZ */
+.prog-wrap{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;margin-bottom:14px;overflow:hidden}
+.prog-bar{height:100%;border-radius:2px;transition:width .35s ease}
+.pge{background:linear-gradient(90deg,#27ae60,#52d68a)}
+.pgm{background:linear-gradient(90deg,#b7770d,#d4a017)}
+.pgh{background:linear-gradient(90deg,#a93226,#e74c3c)}
+.quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.q-num{font-size:12px;color:rgba(255,255,255,0.45)}
+.badge{font-size:11px;font-weight:600;padding:2px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px}
+.be{background:rgba(39,174,96,0.2);color:#52d68a;border:1px solid rgba(39,174,96,0.35)}
+.bm{background:rgba(212,160,23,0.2);color:#d4a017;border:1px solid rgba(212,160,23,0.35)}
+.bh{background:rgba(192,57,43,0.2);color:#e74c3c;border:1px solid rgba(192,57,43,0.35)}
+.question{font-size:15px;color:#f0ead8;line-height:1.6;margin-bottom:14px;min-height:44px}
+.options{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.opt{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:5px;color:#f0ead8;cursor:pointer;font-size:14px;line-height:1.45;padding:10px 13px;text-align:left;transition:all .15s;width:100%}
+.opt:not(:disabled):hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.25);transform:translateX(2px)}
+.opt.correct{background:rgba(39,174,96,0.18);border-color:#27ae60;color:#7debb0}
+.opt.wrong{background:rgba(192,57,43,0.18);border-color:#c0392b;color:#f09080}
+.feedback{font-size:13px;line-height:1.55;padding:11px 13px;border-radius:5px;margin-bottom:12px;display:none;border-left:3px solid transparent}
+.feedback.show{display:block}
+.fbc{background:rgba(39,174,96,0.1);border-left-color:#27ae60;color:#a8f0c6}
+.fbw{background:rgba(192,57,43,0.1);border-left-color:#c0392b;color:#f4a8a0}
+.next-btn{border:none;border-radius:5px;padding:10px 22px;font-size:13px;font-weight:600;cursor:pointer;display:none;float:right;transition:all .15s;color:#fff;text-transform:uppercase;letter-spacing:.5px}
+.next-btn.show{display:block}
+.nbe{background:#27ae60}.nbm{background:#b7770d}.nbh{background:#a93226}
+.clearfix::after{content:'';display:table;clear:both}
+/* RESULTS */
+.results-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:20px;margin-bottom:12px}
+.score-row{display:flex;align-items:center;gap:18px;margin-bottom:16px}
+.score-circle{width:76px;height:76px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;border:2px solid}
+.sce{background:rgba(39,174,96,0.15);border-color:#27ae60}
+.scm{background:rgba(212,160,23,0.15);border-color:#d4a017}
+.sch{background:rgba(192,57,43,0.15);border-color:#c0392b}
+.score-pct{font-size:22px;font-weight:700;line-height:1;color:#f0ead8}
+.score-sub{font-size:10px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:.5px}
+.score-msg{font-size:15px;font-weight:600;color:#f0ead8;margin-bottom:4px}
+.score-detail{font-size:13px;color:rgba(255,255,255,0.5)}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.stat-box{background:rgba(255,255,255,0.04);border-radius:5px;padding:12px;text-align:center;border:1px solid rgba(255,255,255,0.07)}
+.stat-n{font-size:24px;font-weight:700;display:block;line-height:1;margin-bottom:3px}
+.stat-l{font-size:11px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:.5px}
+.sng{color:#27ae60}.snb{color:#c0392b}
+.review-title{font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.review-item{padding:9px 11px;border-radius:5px;margin-bottom:7px;font-size:12px;border-left:2px solid transparent}
+.riok{background:rgba(39,174,96,0.08);border-left-color:#27ae60}
+.riwrong{background:rgba(192,57,43,0.08);border-left-color:#c0392b}
+.ri-q{color:rgba(255,255,255,0.8);margin-bottom:3px;line-height:1.4}
+.ri-a{color:rgba(255,255,255,0.4);font-size:11px}
+.raok{color:#52d68a;font-weight:600}
+.rabad{color:#f09080;font-weight:600}
+.btn-row{display:flex;gap:10px}
+.action-btn{flex:1;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);border-radius:5px;color:#f0ead8;cursor:pointer;font-size:13px;font-weight:600;padding:11px;transition:all .15s;text-transform:uppercase;letter-spacing:.5px}
+.action-btn:hover{background:rgba(255,255,255,0.1)}
+.pae{background:#27ae60;border-color:#27ae60;color:#fff}.pae:hover{background:#1e8449}
+.pam{background:#b7770d;border-color:#b7770d;color:#fff}.pam:hover{background:#8a5a0a}
+.pah{background:#a93226;border-color:#a93226;color:#fff}.pah:hover{background:#7b241c}
+@media(max-width:480px){.body{padding:16px 14px 20px}.header{padding:18px 14px 16px}.header h1{font-size:1.4rem}.btn-row{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <h1>Slow Pitch <span>Rules</span> Quiz</h1>
+    <p>WBSC Official Rules 2022–2025 &nbsp;·&nbsp; 20 Questions per Round &nbsp;·&nbsp; 150 Questions in Bank</p>
+  </div>
+  <div class="body">
+    <div id="home-screen">
+      <div class="top-bar">
+        <button class="mode-btn" id="btn-easy" onclick="sel('easy')"><span class="mode-icon">🟢</span><span class="mode-name">Easy</span><span class="mode-desc">Everyday calls</span></button>
+        <button class="mode-btn" id="btn-medium" onclick="sel('medium')"><span class="mode-icon">🟡</span><span class="mode-name">Medium</span><span class="mode-desc">Less common rules</span></button>
+        <button class="mode-btn" id="btn-hard" onclick="sel('hard')"><span class="mode-icon">🔴</span><span class="mode-name">Hard</span><span class="mode-desc">Rare situations</span></button>
+      </div>
+      <div class="home-card">
+        <div class="home-title" id="home-title">Select a difficulty above</div>
+        <div class="home-sub" id="home-sub">Questions drawn directly from the WBSC Official Slow Pitch Rules 2022–2025. Choose your level to begin a 20-question round.</div>
+        <div class="home-count" id="home-count"></div>
+        <button class="start-btn se" id="start-btn" onclick="startQuiz()" style="display:none">▶ Start Quiz</button>
+      </div>
+    </div>
+    <div id="quiz-screen" style="display:none">
+      <div class="prog-wrap"><div class="prog-bar" id="pbar"></div></div>
+      <div class="quiz-meta"><span class="q-num" id="q-num">Question 1 of 20</span><span class="badge" id="mode-badge">Easy</span></div>
+      <div class="question" id="q-text"></div>
+      <div class="options" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="clearfix"><button class="next-btn" id="next-btn" onclick="nextQ()">Next →</button></div>
+    </div>
+    <div id="results-screen" style="display:none">
+      <div class="results-card">
+        <div class="score-row">
+          <div class="score-circle" id="score-circle"><span class="score-pct" id="score-pct">0%</span><span class="score-sub">score</span></div>
+          <div><div class="score-msg" id="score-msg"></div><div class="score-detail" id="score-detail"></div></div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-box"><span class="stat-n sng" id="s-correct">0</span><span class="stat-l">Correct</span></div>
+          <div class="stat-box"><span class="stat-n snb" id="s-wrong">0</span><span class="stat-l">Wrong</span></div>
+        </div>
+        <div class="review-title">Question review</div>
+        <div id="review-list"></div>
+      </div>
+      <div class="btn-row">
+        <button class="action-btn" onclick="goHome()">↩ Change level</button>
+        <button class="action-btn" id="pa-btn" onclick="startQuiz()">▶ Play again</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const QS={
+easy:[
+  {q:"How many innings make up a regulation slow pitch game?",o:["5 innings","6 innings","7 innings","9 innings"],a:2,e:"Rule 1.2.1: A regulation game consists of seven completed innings."},
+  {q:"Which team bats in the bottom half of each inning?",o:["The visiting team","The home team","The team that won the coin toss","The team currently losing"],a:1,e:"Rule 1.1.4(b): The home team bats in the bottom half of the inning."},
+  {q:"How many balls must be called for a batter to receive a walk?",o:["3","4","5","6"],a:1,e:"Rule 5.1.1: A base on balls is awarded when the Plate Umpire judges four pitches to be balls."},
+  {q:"Is bunting allowed in slow pitch softball?",o:["Yes, at any time","Yes, but only with two strikes","No — bunting is not allowed","Only if the infield is playing back"],a:2,e:"Rule 5.1.8: Bunting is not allowed in slow pitch softball."},
+  {q:"Is stealing bases allowed in slow pitch softball?",o:["Yes, any time","Yes, only after a passed ball","No — stealing is prohibited","Only in extra innings"],a:2,e:"Rule 5.1.39: Stealing is the prohibited act of a runner attempting to advance when a pitched ball is not batted."},
+  {q:"How many outs are needed to retire a side in one half-inning?",o:["2","3","4","5"],a:1,e:"Rule 1.1.5: A half-inning continues until three outs occur."},
+  {q:"What is the minimum arc height required for a legal pitch?",o:["0.91 m (3 ft)","1.22 m (4 ft)","1.83 m (6 ft)","2.44 m (8 ft)"],a:2,e:"Rule 4.3.7(i): The ball must be delivered with an arc of at least 1.83 m (6 ft) from the ground."},
+  {q:"What is the maximum arc height allowed for a legal pitch?",o:["2.44 m (8 ft)","3.05 m (10 ft)","3.65 m (12 ft)","4.57 m (15 ft)"],a:2,e:"Rule 4.3.7(i): The arc must not exceed 3.65 m (12 ft) from the ground."},
+  {q:"The strike zone is the space over any part of home plate between the batter's:",o:["Shoulders and ankles","Front shoulder and knees","Back shoulder and knees","Waist and knees"],a:2,e:"Rule 5.1.40: The strike zone is the space over any part of home plate between the batter's back shoulder and the knees in their natural batting stance."},
+  {q:"When is the ball dead after a base on balls?",o:["Only when the batter reaches first base","Immediately — the ball is dead","When the next pitch is delivered","When the catcher returns the ball"],a:1,e:"Rule 5.1.1: On a base on balls, the batter is awarded a base and the ball is dead."},
+  {q:"A fielder legally catches a fly ball before it hits the ground. The batter-runner is:",o:["Safe if they reach first quickly","Out","Awarded second base","Given another turn at bat"],a:1,e:"Rule 5.5.2(a)(i): The batter-runner is out when a fielder legally catches a fly ball before it touches the ground."},
+  {q:"What is the score of a forfeited game?",o:["1-0","3-0","7-0","10-0"],a:2,e:"Rule 1.2.7(c): The score of a forfeited game is 7-0 in favour of the team not at fault."},
+  {q:"How many warm-up pitches is a pitcher allowed at the start of each half-inning?",o:["1","2","3","5"],a:2,e:"Rule 4.3.1(a): Not more than three warm-up pitches in not more than one minute."},
+  {q:"A foul ball hit with two strikes — the batter is:",o:["Out","Given another pitch","Awarded first base","Out only if the catcher catches it"],a:0,e:"Rule 5.4.3(b)(vi): A foul ball counts as a strike, including the third strike."},
+  {q:"Which team occupies the third base dugout?",o:["The visiting team","The home team","The team currently batting","The team currently winning"],a:1,e:"Rule 1.1.4(b): The home team occupies the third base dugout."},
+  {q:"A runner may leave their base and advance when:",o:["The pitcher begins their windup","The pitched ball is batted","The catcher catches the ball","Time is called"],a:1,e:"Rule 5.10.1(a): A runner may advance with jeopardy while the ball is live when a pitched ball is batted."},
+  {q:"Before starting delivery, the pitcher must come to a full and complete stop for:",o:["Less than 1 second","Not less than 1 second and not more than 10 seconds","Exactly 2 seconds","At least 3 seconds"],a:1,e:"Rule 4.3.5(c): The pitcher must come to a complete stop for not less than one second and not more than ten seconds."},
+  {q:"A pitched ball in the strike zone hits the batter. It is called a:",o:["Ball — batter advances to first","Dead ball — no count change","Strike","Hit by pitch — batter takes first base"],a:2,e:"Rule 5.4.3(b)(iv): A strike is called when a pitched ball hits the batter while the pitch is in the strike zone."},
+  {q:"A pitched ball hits the batter OUTSIDE the strike zone. The call is:",o:["The batter is out","The batter advances to first base","A ball is called","A warning is given"],a:2,e:"Rule 5.4.3(a)(vi): A ball is called when a delivered ball hits the batter outside of the strike zone."},
+  {q:"Is chopping the ball (striking sharply downward) allowed in slow pitch?",o:["Yes","No — not allowed","Only with two strikes","Only in extra innings"],a:1,e:"Rule 5.1.11: Chopping the ball is not allowed in slow pitch softball."},
+  {q:"How long does the pitcher have to release the next pitch after receiving the ball?",o:["5 seconds","10 seconds","15 seconds","20 seconds"],a:1,e:"Rule 4.3.7(j): The pitcher has 10 seconds to release the next pitch."},
+  {q:"A fair batted ball hits the foul line pole while in flight. It is called:",o:["A foul ball","A fair ball","A home run","A dead ball — batter returns"],a:2,e:"Rule 5.1.17(g): A fair ball that hits the foul line pole while in flight is a home run."},
+  {q:"Two runners arrive at the same base. Who is entitled to it?",o:["The runner who arrived second","The runner who first legally occupied the base","The faster runner","The batter-runner always has priority"],a:1,e:"Rule 5.9(f): The runner who first legally occupied the base is entitled to it unless forced to advance."},
+  {q:"Which team occupies the first base dugout?",o:["The home team","The visiting team","The team currently in the field","The team currently losing"],a:1,e:"Rule 1.1.4(c): The visiting team occupies the first base dugout."},
+  {q:"How many players must a team have in the lineup at minimum (without an EP)?",o:["8","9","10","11"],a:2,e:"Rule 3.2.2(a): Each team must have a minimum of ten players in the line-up at all times."},
+  {q:"A fielder other than the catcher or first baseman uses a mitt. This is:",o:["Legal","An illegal glove — not permitted","Legal if approved by the umpire","Legal only in the outfield"],a:1,e:"Rule 2.1.11: An illegal glove or mitt is the use of a mitt by a fielder other than a catcher or first baseman."},
+  {q:"What minimum height must the number on the back of a uniform shirt be?",o:["10.2 cm (4 in)","12.7 cm (5 in)","15.2 cm (6 in)","20.3 cm (8 in)"],a:2,e:"Rule 2.5.1(d): An Arabic number of contrasting colour at least 15.2 cm (6 in.) high must be worn on the back of all uniform shirts."},
+  {q:"Are ball caps mandatory for male players?",o:["No — optional for everyone","Yes — ball caps are mandatory for all male players and must be worn properly","Yes — but only outdoors","Only if the umpire requires it"],a:1,e:"Rule 2.5.1(a)(i): Ball caps must be alike, are mandatory for all male players and must be worn properly."},
+  {q:"A runner physically passes a preceding runner who has not yet been put out. The result is:",o:["The preceding runner is out","The runner who passed is out — ball remains live","Both are out","The runner who passed receives a warning"],a:1,e:"Rule 5.10.3(a)(vi): The runner who passes a preceding runner is out; the ball remains live."},
+  {q:"Can the pitcher deliver the ball through their legs?",o:["Yes","No","Only in a windmill delivery","Only if left-handed"],a:1,e:"Rule 4.3.7(e)(2): The pitcher shall not pitch the ball through the legs."},
+  {q:"A batted ball hits the pitcher's plate and rolls to foul territory before reaching first or third base. It is:",o:["Fair","Foul","In play — determined by where it stops","A dead ball"],a:1,e:"Rule 5.1.21(g): A foul ball is one that hits the pitcher's plate and rolls untouched to foul territory before reaching first or third base."},
+  {q:"A wild throw is one that:",o:["Goes beyond the boundary lines","Cannot be caught or controlled but remains in play","Hits a base runner","Goes into the dugout"],a:1,e:"Rule 5.1.47: A wild throw cannot be caught or controlled and remains in play."},
+  {q:"If a runner slides into a base and dislodges it, is the runner out for being off the base?",o:["Yes — they must maintain contact","No — a runner reaching a base safely is not out if the base becomes dislodged","Yes — unless they immediately retouch","No — but only if accidental"],a:1,e:"Rule 5.10.4(n): A runner reaching a base safely will not be out for being off that base if it becomes dislodged."},
+  {q:"Are metal cleats permitted in Co-ed slow pitch?",o:["Yes, always","No — metal cleats must not be worn in any Co-ed division","Yes, but only for adults","Only with tournament director approval"],a:1,e:"Rule 2.4.2(f): For Youth and Co-ed, metal cleats must not be worn in any division at any level of play."},
+  {q:"The pitcher's pivot foot must remain in contact with the pitcher's plate until:",o:["The full windup is complete","The pitched ball leaves the pitcher's hand","The batter swings","The ball reaches home plate"],a:1,e:"Rule 4.3.7(f): The pivot foot must remain in contact with the pitcher's plate until the pitched ball leaves the hand."},
+  {q:"If the base or pitching distance is found to be incorrect during a game, it must be corrected:",o:["Immediately — play stops","At the start of the next full inning","At the start of the next half-inning","It cannot be corrected once play begins"],a:1,e:"Rule 2.2.2(b): If the base or pitching distance is found to be incorrect, the error must be corrected at the start of the next full inning."},
+  {q:"A fair fly ball that clears the outfield fence in fair territory is:",o:["A ground-rule double","A home run","A two-base award","An out if caught at the fence"],a:1,e:"Rule 5.5.1(e)(i): A home run is declared when a fair batted fly ball goes over the fence in fair territory."},
+  {q:"A thrown ball accidentally touches a base coach in the coach's box. The ball is:",o:["Dead — runners return","A blocked ball — runners advance","Not a blocked ball — ball remains in play","A dead ball — batter returns"],a:2,e:"Rule 5.1.7(e): A thrown ball touching a base coach accidentally is NOT a blocked ball and remains in play."},
+  {q:"The pitcher must deliver the ball with which motion toward home plate?",o:["Overhand","Underhanded","Sidearm only","Any motion the pitcher chooses"],a:1,e:"Rule 4.3.7(d): The pitcher must deliver the ball toward home plate on the first forward swing of the pitching arm past the hip with an underhanded motion."},
+  {q:"A batter who enters the box with an altered bat is:",o:["Given a warning","Out — bat removed; batter is ejected","Out only — no ejection","The at-bat is replayed with a legal bat"],a:1,e:"Rule 5.4.4(a)(iii): The batter is out and ejected from the game for using an altered bat."},
+  {q:"A force out occurs when a runner loses the right to their base because:",o:["The ball is caught on the fly","The batter becomes a batter-runner, forcing the runner to advance","The runner fails to tag up","The runner runs out of the baseline"],a:1,e:"Rule 5.1.20: A force out is when a runner loses the right to their base because the batter becomes a batter-runner."},
+  {q:"Can any player wear a glove?",o:["No — only defensive players","Yes — any player may wear a glove","Only infielders and catchers","Only players in the starting lineup"],a:1,e:"Rule 2.4.1(a): Any player may wear a glove."},
+  {q:"A batter must take their position in the batter's box within how long after 'Play Ball' is called?",o:["5 seconds","10 seconds","15 seconds","20 seconds"],a:1,e:"Rule 5.4.2(b): A batter must take their position within 10 seconds after the Plate Umpire declares 'Play Ball'."},
+  {q:"A batted ball that first falls on fair territory beyond first or third base is:",o:["Foul — because it passed the base","Fair","Determined by where first touched","Fair only if untouched"],a:1,e:"Rule 5.1.17(e): A fair ball is one that first falls on fair territory beyond first or third base."},
+  {q:"A plaster cast — may a player wear one during a game?",o:["Yes, with umpire approval","No — a cast may not be worn in a game","Yes, if adequately padded","Only catchers may wear one"],a:1,e:"Rule 2.5.1(f): A cast (plaster, metal or other hard substances) may not be worn in a game."},
+  {q:"When the pitcher fails to release the ball within 10 seconds, the result is:",o:["A warning first","An illegal pitch — runners advance","A ball is awarded to the batter","A strike is called"],a:2,e:"Rule 4.3.7(j) Effect: A ball is awarded to the batter when the pitcher fails to release within 10 seconds."},
+  {q:"A batted ball bounds past first base while over fair territory. It is ruled:",o:["Fair — regardless of where it lands after","Foul","Determined by final resting position","Determined by the umpire's judgment"],a:0,e:"Rule 5.1.17(b): A fair ball bounds past first or third base on or over fair territory, regardless of where it hits after."},
+  {q:"A batted ball touches first, second or third base. It is ruled:",o:["Fair","Foul","Determined by final resting position","Dead — play stops"],a:0,e:"Rule 5.1.17(c): A fair ball is one that touches first, second or third base."},
+  {q:"After a pitcher is replaced, the incoming pitcher gets:",o:["No warm-up","Up to 1 minute to deliver not more than 3 pitches","Up to 2 minutes to deliver not more than 5 pitches","As long as the umpire allows"],a:1,e:"Rule 4.3.1(a): At the beginning of each half inning, or when a pitcher relieves another, not more than one minute may be used to deliver not more than three pitches."},
+  {q:"A batter who steps with one foot completely outside the batter's box and makes contact with the ball has hit:",o:["A fair ball","An illegally batted ball","A foul ball","A valid hit — foot position doesn't matter"],a:1,e:"Rule 5.1.23(a): An illegally batted ball occurs when the batter contacts the ball while one foot is completely out of the batter's box and on the ground."}
+],
+medium:[
+  {q:"The infield fly rule applies to a fair fly ball with first and second (or bases loaded) occupied, fewer than two outs. Does it apply to a line drive?",o:["Yes","No — does not apply to line drives","Only if the umpire judges it catchable","Yes, but only with bases loaded"],a:1,e:"Rule 5.1.26: An infield fly is a fair fly ball NOT including a line drive."},
+  {q:"When an infield fly is declared, the batter-runner is out. The ball is:",o:["Dead immediately","Live — runners may advance at their own risk","Dead only if caught","Live only if it drops untouched"],a:1,e:"Rule 5.5.2(a)(iv): When an infield fly is declared, the batter-runner is out and the ball remains live."},
+  {q:"A defensive player without possession of the ball impedes the progress of a runner. This is:",o:["Interference","Obstruction","A blocked ball","A fake tag"],a:1,e:"Rule 5.1.32(b): Obstruction occurs when a fielder impedes the progress of a batter-runner or runner while not in possession of the ball."},
+  {q:"When obstruction occurs, the umpire signals:",o:["Immediately calls time","A delayed dead ball — ball stays live until end of play","The obstructed runner safe automatically","An ejection of the fielder"],a:1,e:"Rule 5.10.2(a): A delayed dead ball will be signalled — ball remains live until the end of the play."},
+  {q:"How many charged defensive conferences are allowed in a 7-inning game?",o:["1","2","3","4"],a:2,e:"Rule 4.2.1(a): A defensive team has only three charged defensive conferences in a seven-inning game."},
+  {q:"Exceeding the defensive conference limit — the consequence is:",o:["A warning is given","The pitcher is declared an illegal pitcher for that conference","The game is forfeited","The team loses one run"],a:1,e:"Rule 4.2.1 Effect: For the fourth or additional charged defensive conference, the pitcher in the game during that conference is declared an illegal pitcher."},
+  {q:"A foul tip is caught by the catcher. It is called a:",o:["Ball","Foul — batter continues","Strike — if third strike the batter is out","Dead ball — no count change"],a:2,e:"Rule 5.1.22(b): Any foul tip that is caught is a strike and is dead. The batter is out if it is a third strike."},
+  {q:"An offensive player impedes, hinders or confuses a defensive player attempting to make a play. This is:",o:["Obstruction","Interference","A blocked ball","Unsportsmanlike conduct"],a:1,e:"Rule 5.1.30(a): Interference is the act of an offensive player or team member who impedes, hinders or confuses a defensive player attempting to execute a play."},
+  {q:"On a play at first, the batter-runner touches only the foul (orange) portion of the double base. The defence appeals before the runner returns. The batter-runner is:",o:["Safe — either portion is valid","Out — treated as missing the base","Safe — if no other play was being made","Out only if throw came from foul territory"],a:1,e:"Rule 5.5.2(a)(v): If a play is made and the batter-runner touches only the foul portion and the defence appeals before the runner returns, the batter-runner is out."},
+  {q:"Can a defensive team issue an intentional walk without pitching four balls?",o:["No — four balls must always be pitched","Yes — the pitcher, catcher or head coach may notify the Plate Umpire","Yes — but only the head coach may request it","Yes — but only before the first pitch"],a:1,e:"Rule 5.5.1(b)(ii): The defensive team may elect to intentionally walk a batter by notifying the Plate Umpire."},
+  {q:"A pitcher declared illegal may:",o:["Not play at all for the rest of the game","Play another defensive position and continue on offence","Pitch again after a one-inning rest","Return to pitch in extra innings only"],a:1,e:"Rule 4.5: An illegal pitcher may play another defensive position and continue on offense for the remainder of the game."},
+  {q:"A runner leaves base before a caught fly ball is first touched. The defence must appeal:",o:["During the same half-inning only","Before the next legal or illegal pitch (or before fielders leave fair territory)","Any time before end of game","Only within 5 seconds of the play"],a:1,e:"Rule 1.2.6(a)(i): The opportunity to appeal is lost if not made before the next legal or illegal pitch."},
+  {q:"A fielder catches a fly ball while in dead ball territory. Is it a legal catch?",o:["No — both feet must be in fair territory","Yes — if the player controls the ball when returning to dead ball territory ground, it is legal","No — ball must be caught in fair territory","Yes — but ball is dead immediately"],a:1,e:"Rule 5.1.9(c): If the player has control of the ball when returning to the ground in dead ball territory, it is a legal catch."},
+  {q:"A defensive player erases the batter's box lines. The penalty is:",o:["A warning","A ball is called on the batter — no pitch needs to be thrown","An automatic strike","The fielder is ejected immediately"],a:1,e:"Rule 5.4.3(a)(vii): When a defensive team member erases the batter's box lines, a ball is called on the batter — a pitch does not have to be thrown."},
+  {q:"With fewer than two outs and a runner on first, an infielder intentionally drops a catchable fair fly ball. The batter-runner is:",o:["Safe — ball is live","Out","Out — but runners may advance","Safe — fielder receives a warning"],a:1,e:"Rule 5.5.2(b)(xiii): With less than two outs and a runner on first, a fielder intentionally dropping a catchable fair fly ball results in the batter-runner being out."},
+  {q:"When a fielder uses an illegal glove, the offensive manager may:",o:["Accept the result of the play or have it nullified","Demand the fielder be ejected","Demand a full replay of the at-bat","Accept the result only — no option"],a:0,e:"Rule 5.7: When an illegal glove is used, the manager of the offended team may take the result of the play or have it nullified."},
+  {q:"A batter-runner runs more than 1 metre (3 ft) from the base path to avoid a tag. The batter-runner is:",o:["Safe — the baseline is just a guideline","Out — ball remains live","Given a warning first","Out only if the fielder had the ball"],a:1,e:"Rule 5.5.2(a)(vi): The batter-runner is out when they run more than one metre from the base path to avoid being tagged."},
+  {q:"A runner abandons a base and enters their team area while the ball is live. The runner is:",o:["Safe if they return before being tagged","Out","Given a warning","Safe — team area is always safe"],a:1,e:"Rule 5.10.3(a)(xi): A runner is out when they abandon a base and enter their team area while the ball is live."},
+  {q:"A pitched ball slips from the pitcher's hand during their windup. This results in:",o:["A ball called on the batter","An illegal pitch","A no pitch — all action is cancelled","The batter may swing if they choose"],a:2,e:"Rule 4.4(d): A no pitch occurs and a dead ball is declared when the ball slips from the pitcher's hand during the windup or backswing."},
+  {q:"An offensive team member deliberately erases the batter's box lines. The penalty is:",o:["A ball is called","A strike is called — no pitch needs to be thrown","A warning for the first offence","The team forfeits the inning"],a:1,e:"Rule 5.4.3(b)(ix)(1): If a batter erases the lines, the umpire will call a strike — a pitch does not have to be thrown."},
+  {q:"The catcher must remain in the catcher's box until:",o:["The pitcher begins the windup","The pitched ball is batted, touches the ground, plate, or batter, or reaches the catcher's box","The ball crosses home plate","Time is called"],a:1,e:"Rule 4.3.4(a): The catcher must remain in the catcher's box until the pitched ball is batted, touches the ground, plate, or batter, or reaches the catcher's box."},
+  {q:"How many charged offensive conferences are allowed per inning?",o:["Unlimited","1","2","3"],a:1,e:"Rule 5.2(b): Only one charged conference per inning is permitted for the offensive team."},
+  {q:"Do charged defensive conference counts reset when a new pitcher enters?",o:["Yes — reset to zero","No — accumulative; do not reset","Yes — new pitcher gets one extra conference","Only if it is the first pitcher change"],a:1,e:"Rule 4.2.1(b): Charged defensive conferences are accumulative and do not start over when a new pitcher enters."},
+  {q:"A runner deliberately crashes into a fielder who has the ball. The runner is:",o:["Safe — legal to run through a fielder","Out — and if flagrant the runner is also ejected","Out — but ball is live","Given a warning first"],a:1,e:"Rule 5.10.3(c)(ix): A runner is out when they deliberately crash into a fielder with the ball. If flagrant, the runner is ejected."},
+  {q:"A starting player who is substituted out may re-enter the game:",o:["Never","Once — and must return to the same batting position","Twice — once per half","Any number of times"],a:1,e:"Rule 3.2.3(e): All starting players may be substituted and re-enter the line-up once, and must remain in the same batting position."},
+  {q:"When is a catch NOT legal due to a collision?",o:["Any collision makes it illegal","If a fielder while gaining control collides with another player, umpire or fence and drops the ball","Only if the collision was with the fence","Collisions never affect the legality of a catch"],a:1,e:"Rule 5.1.9(d): It is not a catch if a fielder while gaining control collides with another player, umpire or fence and drops the ball as a result."},
+  {q:"A fair untouched batted ball hits a runner off base, and a fielder had an opportunity to make a play. The runner is:",o:["Safe — runner has right of way","Out — ball is dead","Out — ball remains live","Given a warning"],a:1,e:"Rule 5.10.3(c)(i): The runner is out and the ball is dead when struck by an untouched fair batted ball while off base and a fielder had an opportunity to make an out."},
+  {q:"A base coach may leave the coach's box:",o:["Never","To avoid a fielder or to signal a runner, as long as they do not interfere","Any time during a live ball","Only when time is called"],a:1,e:"Rule 3.4.3(b)(ii): A base coach may leave the box to avoid a fielder or to signal a runner, as long as they do not interfere with play."},
+  {q:"A runner on first base — when may they legally leave the base to advance on a fly ball?",o:["Any time after the ball is hit","When the ball is first touched by a fielder","Only after the ball lands","Only if the umpire signals"],a:1,e:"Rule 5.10.1(d): A runner may advance when a legally caught fly ball is first touched by a fielder."},
+  {q:"A legally batted fly ball or line drive that hits the ground before being caught is called a:",o:["Dropped ball","Trapped ball","Wild ball","Fair ball in play"],a:1,e:"Rule 5.1.44(a): A trapped ball is a legally batted fly ball or line drive that hits the ground or a fence prior to being caught."},
+  {q:"A fair batted ball bounces over or through the outfield fence. Runners are awarded:",o:["One base","Two bases from time of pitch","Three bases","A home run"],a:1,e:"Rule 5.11(b)(i)(5): A two-base award is given when a fair batted ball bounces over or rolls under or through a fence."},
+  {q:"When is a substitute officially in the game?",o:["When they enter the field","After a pitch has been thrown or a play made, following notification to the umpire","When the umpire acknowledges their entry","When the manager signs the lineup card"],a:1,e:"Rule 3.2.6(c): A substitute is not legally in the game until a pitch has been thrown or a play has been made."},
+  {q:"May a coach use electronic communication equipment while on the field?",o:["Yes, with umpire approval","No — no communication equipment shall be used","Yes, but only in the coach's box","Only in postseason play"],a:1,e:"Rule 3.4.1(c): No communication equipment shall be used between a coach on the field, a coach and the dugout, or a coach and any player."},
+  {q:"Can a pitcher wear a glove on their pitching hand?",o:["Yes","No","Only a fingerless glove","Only if it matches the uniform"],a:1,e:"Rule 4.3.2(f): The pitcher shall not wear a glove on the pitching hand."},
+  {q:"After an overthrow goes out of play with two runners between the same two bases, the award is based on:",o:["The trailing runner's position","The lead runner's position","Where both runners were when the throw was made","Each runner gets two bases individually"],a:1,e:"Rule 5.11(b)(ii)(i): If two runners are between the same two bases, the award is based on the position of the lead runner."},
+  {q:"A batter hits a fair ball and the bat contacts the ball a second time while over fair territory. The batter is:",o:["Safe — second contact is legal","Out — ball is dead","Out — ball remains live","Given a warning first"],a:1,e:"Rule 5.4.4(a)(viii): The batter is out and ball is dead when they hit a fair ball with the bat a second time over fair territory."},
+  {q:"A runner not given sufficient time to return to their base — are they out for being off base before the pitch?",o:["Yes — must be on the base","No — may advance as though having left legally","Yes — unless they return immediately","No — but only on the first occurrence"],a:1,e:"Rule 5.10.4(k): The runner will not be called out if not given sufficient time to return; they may advance as though having left legally."},
+  {q:"A batter steps directly in front of the catcher to the other batter's box while the pitcher is in position. The batter is:",o:["Out — ball is dead","Given a warning","Allowed — they may move between boxes","Called for a ball"],a:0,e:"Rule 5.4.4(a)(vii): The batter is out and ball is dead when they step directly in front of the catcher to the other batter's box while the pitcher is in position."},
+  {q:"A starting player and their substitute — may they both be in the game at the same time?",o:["Yes, briefly during a substitution","No — they may not be in the game simultaneously","Yes, in extra innings","Only in Co-ed"],a:1,e:"Rule 3.2.6(b): A starting player and their substitute(s) may not be in the game at the same time."},
+  {q:"An obstructed runner — may they ever be called out between the two bases where they were obstructed?",o:["No, never","Yes — if the runner commits interference after obstruction, or is appealed for missing a base","Yes — always, if the fielder had the ball","No — obstruction makes them completely immune"],a:1,e:"Rule 5.10.2(d)(i): An obstructed runner may be called out between the obstructed bases if they commit interference after the obstruction or are legally appealed for missing a base."},
+  {q:"When must a substitution take place?",o:["At any time during live ball play","Only when the ball is dead","Only between innings","Only after a foul ball"],a:1,e:"Rule 3.2.6(c): A substitution must take place only when the ball is dead."},
+  {q:"What is an 'in flight' ball?",o:["Any ball not yet fielded","Any batted, thrown or pitched ball that has not yet touched the ground or some object other than a fielder","A ball thrown from outfield to infield","A ball hit into the air"],a:1,e:"Rule 5.1.25: 'In flight' is any batted, thrown or pitched ball that has not yet touched the ground or some object other than a fielder."},
+  {q:"A batter-runner runs outside the one-metre line and interferes with a fielder taking a throw at first base. The batter-runner is:",o:["Safe — they have right of way","Out — ball is dead","Out — ball is live","Given a warning"],a:1,e:"Rule 5.5.2(b)(ii): The batter-runner is out and ball is dead when they run outside the one-metre line and interfere with a fielder taking a throw at first base."},
+  {q:"Defensive conferences in extra innings:",o:["Three per extra-inning game","One per extra inning; unused ones may carry over to subsequent extra innings","Two per extra inning","No defensive conferences in extra innings"],a:1,e:"Rule 4.2.1(d): There is only one charged defensive conference for every extra inning. A conference not taken may be carried over to any subsequent extra inning."},
+  {q:"A batter steps out of the batter's box with both feet and deliberately delays the game. A strike is called when:",o:["The umpire warns first","None of the exceptions that permit leaving the box apply","Only after two warnings","Only if the pitcher is ready to pitch"],a:1,e:"Rule 5.4.3(b)(x): When the batter steps out with both feet, delays the game and none of the exceptions apply, a strike is called — a pitch does not have to be thrown."},
+  {q:"Can a pitcher return to pitch in the same half-inning after being removed temporarily?",o:["No, never","Yes — no limit, provided they have not left the batting order or been declared an illegal pitcher","Yes, but only once","Yes, but only if no other pitcher is available"],a:1,e:"Rule 4.3.1(d): There is no limit on returning to the pitching position provided they have not left the batting order or been declared an illegal pitcher."},
+  {q:"A runner returning to a base while the ball is dead must touch intervening bases:",o:["Always — all bases must be touched","Only if they missed a base; otherwise they need not touch intervening bases","Never — they go directly to the base","Only if the umpire instructs them"],a:1,e:"Rule 5.9(c): When a runner is returning to a base while the ball is dead, they need not touch intervening bases unless they missed a base."},
+  {q:"What is an 'over-slide'?",o:["When a runner slides past and loses contact with a base they were attempting to reach, putting them in jeopardy","When a runner slides into the outfield","When a runner slides past home plate into the backstop","An illegal slide technique"],a:0,e:"Rule 5.1.35: An over-slide occurs when a batter-runner or runner slides past and loses touch with a base they are attempting to reach, putting them in jeopardy."},
+  {q:"A pitcher returning to pitch in the SAME half-inning — are they entitled to warm-up pitches?",o:["Yes — up to 3","Yes — up to 1","No — not entitled to warm-up pitches","Yes — same allowance as a relief pitcher"],a:2,e:"Rule 4.3.1(c): A pitcher returning to pitch in the same half-inning shall not be entitled to warm-up pitches."}
+],
+hard:[
+  {q:"In the tiebreaker inning, the runner placed on second base is the player scheduled to bat:",o:["First in the batting order","Tenth (or eleventh with EP / twelfth in Co-ed) in that half-inning","Last in the batting order","The previous half-inning's lead-off batter"],a:1,e:"Rule 1.2.4(a): The player scheduled to bat tenth (or eleventh with EP / twelfth in Co-ed) in that half-inning is placed on second base."},
+  {q:"In the tiebreaker inning, must the runner starting on second base touch first base for a run to score?",o:["Yes — all bases must be touched","No — the runner does not need to touch first base","Yes — but only if hit to the outfield","No — but only if hit in the air"],a:1,e:"Rule 1.2.5(b): When the tiebreaker is used, the runner starting at second base does not have to touch first base in order for a legal run to be scored."},
+  {q:"The Run Ahead Rule ends the game when one team leads by 20 runs after how many innings?",o:["3","4","5","6"],a:1,e:"Rule 1.2.3(a): The run-ahead rule applies when one team leads by 20 runs after four innings."},
+  {q:"The Run Ahead Rule ends the game when one team leads by 15 runs after how many innings?",o:["4","5","6","7"],a:1,e:"Rule 1.2.3(a): The run-ahead rule applies when one team leads by 15 runs after five innings."},
+  {q:"A protest of player eligibility can be submitted:",o:["Only before the game begins","At any time — even after the game, to the appropriate authority","Only before the next pitch","Only during a dead ball"],a:1,e:"Rule 1.2.8(c): At any time, a protest may be submitted to the appropriate authority for the eligibility of a team roster member."},
+  {q:"If a protest for misinterpretation of a rule is upheld, the result is:",o:["The game is replayed from the beginning","The game is replayed from the point of the incorrect decision","The offending team forfeits","The score at time of the incorrect decision stands"],a:1,e:"Rule 1.2.14(b): When a protest for misinterpretation of a rule is allowed, the game is replayed from the point at which the incorrect decision was made."},
+  {q:"A team uses an Extra Player and fails to complete the game with the EP. The result is:",o:["A warning","A run awarded to the opposing team","A forfeit to the non-offending team","The EP is simply removed and play continues with 10 players"],a:2,e:"Rule 3.2.4(b) Effect: If a team fails to complete the game with an EP, the game shall be forfeited to the non-offending team."},
+  {q:"An illegal re-entry is discovered. The head coach and the illegal re-entered player are:",o:["Both warned","Both ejected","Only the player is ejected","Only the head coach is ejected"],a:1,e:"Rule 3.1.8 Effect: The head coach named on the line-up card and the illegal re-entered player are both ejected."},
+  {q:"A Replacement Player may enter for a withdrawn player. A formal substitution must be made after:",o:["At the start of the next half-inning","The remainder of the inning in progress and the following complete inning","Immediately if the player cannot return","The inning in progress only"],a:1,e:"Rule 3.2.5(c): A replacement player may play for the remainder of the inning in progress and for the following complete inning; after that a legal substitution must be made."},
+  {q:"In Co-ed slow pitch, any walk (intentional or not) to a male batter results in:",o:["A one-base award only","A two-base award to the male batter","The female batter also being walked","Same as all walks — one base"],a:1,e:"Rule 5.5.1(b)(ii)(3) and 5.11(b)(vi): In Co-ed, any walk to a male batter, intentional or otherwise, results in a two-base award."},
+  {q:"A fielder uses detached equipment to intentionally contact a fair batted ball. Runners are awarded:",o:["One base from time of pitch","Two bases from time of pitch","Three bases from time of pitch — delayed dead ball","Four bases — home run declared"],a:2,e:"Rule 5.11(c): Three bases are awarded (delayed dead ball) when detached equipment contacts a fair batted ball, from the time of the pitch."},
+  {q:"Batting out of order is appealed after the incorrect batter completed their turn but before the next legal pitch. Who is called out?",o:["The incorrect batter who just batted","The player who should have batted","No one — play stands","The player at fault in the previous inning"],a:1,e:"Rule 5.4.1 Effect (b)(i): The player who should have batted is declared out."},
+  {q:"After batting out of order is appealed and upheld, any advance or score by the improper batter is:",o:["Allowed to stand","Nullified","Counted only if a run scored","Allowed only for extra-base hits"],a:1,e:"Rule 5.4.1 Effect (b)(ii): Any advance or score made as a result of the improper batter becoming a batter-runner will be nullified."},
+  {q:"Absent a specific league rule, how long does a team have to file a formal written protest?",o:["Before the next game","Generally within 48 hours of the scheduled game time","Within 24 hours","By the end of the same calendar day"],a:1,e:"Rule 1.2.12(b): Generally 48 hours after the scheduled time of the contest is considered a reasonable time."},
+  {q:"An overthrow leaves the field of play. The two-base award is from the time:",o:["The ball was pitched","The errant throw left the fielder's hand","The ball crossed the boundary","The umpire signals dead ball"],a:1,e:"Rule 5.11(b)(ii)(i): When the ball is thrown and leaves the playing field, the award is from the time the ball left the fielder's hand."},
+  {q:"A fielder unintentionally carries a live ball into the dugout. Runners are awarded one base from:",o:["The time of the pitch","The time the fielder left the field of play","The time the umpire signals dead ball","The last base legally touched"],a:1,e:"Rule 5.11(a)(ii)(1): When a fielder unintentionally carries a ball out of the playing field, the one-base award is from the time the fielder left the field of play."},
+  {q:"A player enters the game without being reported to the umpire. This is called:",o:["An illegal re-entry","An illegal substitution","An unreported substitution","An ineligible player violation"],a:2,e:"Rule 3.1.9: An unreported substitution occurs when a player enters the game without being reported to the responsible umpire."},
+  {q:"In Co-ed slow pitch, the batting order must:",o:["Have all males bat first then all females","Alternate genders throughout","Have at least two males at the top of the order","Be determined by defensive position"],a:1,e:"Rule 3.2.2(a)(iii): In Co-ed, the batting order must alternate the genders."},
+  {q:"A declared illegal pitcher returns to pitch and throws one pitch. The result is:",o:["The pitch stands — warning given","The pitch is nullified — warning given","The illegal pitcher is ejected","The team forfeits"],a:2,e:"Rule 4.5 Effect (a): The illegal pitcher is ejected."},
+  {q:"An incorrect runner is placed on second base in a tiebreaker inning. The defence may appeal:",o:["Only before the first pitch of that inning","At any time the incorrect runner is on base","Only before the end of that half-inning","Only during a dead ball"],a:1,e:"Rule 1.2.4(c): A proper appeal may be made at any time the incorrect runner is on base."},
+  {q:"A fair batted fly ball goes off a fielder's glove and over the fence in FOUL territory. The ruling is:",o:["A home run","A two-base award","A foul ball — batter returns","A single"],a:1,e:"Rule 5.11(b)(i)(2): A two-base award is given when a fair batted fly ball hits a fielder's glove or body and lands over the fence in foul territory."},
+  {q:"An ineligible player returns to the game. The result is:",o:["A warning to the team","The player is ejected","A forfeit in favour of the non-offending team","The at-bat is nullified and player removed"],a:2,e:"Rule 3.1.10 Effect: When a declared ineligible player returns to the game, a forfeit is declared in favour of the non-offending team."},
+  {q:"A pitcher applies resin directly to the ball. If it continues, the consequence is:",o:["A ball awarded to the batter","The pitcher receives a warning","The pitcher is ejected from the game","The pitcher must change gloves"],a:2,e:"Rule 4.3.2 Effect: If any defensive player continues to place a foreign substance on the ball, the pitcher shall be ejected from the game."},
+  {q:"A substitute who has already been in the game and was subsequently removed — may they re-enter as a player?",o:["Yes, once","Yes, twice","No — this is an illegal re-entry","Yes, but only as a pinch runner"],a:2,e:"Rule 3.2.6(a): A substitute who re-enters as a player is an illegal re-entry."},
+  {q:"In Co-ed, the female batter's option on a two-out walk following a male walk — when is the choice irrevocable?",o:["When the female batter picks up a bat","Once the female batter enters the batter's box or reaches first base","When the umpire calls Play Ball","When the female batter takes the first pitch"],a:1,e:"Rule 5.5.1(b)(ii)(3): Once the batter enters the batter's box or reaches first base, the option is considered selected and cannot be changed."},
+  {q:"A formal written protest must contain:",o:["The score at time of protest only","Date, time, place of game; names of umpires and scorers; the rule(s) invoked; decision and conditions; and all essential facts","The name of the protesting manager only","A verbal declaration only — no written form required"],a:1,e:"Rule 1.2.13: A formal protest must contain the date/time/place, umpire and scorer names, the rule(s) invoked, the decision and conditions, and all essential facts."},
+  {q:"Runners switching positions on the bases — when the appeal is upheld:",o:["Only the runner closest to home is out","Each runner who switched is out and the head coach is ejected","A warning is issued for the first offence","Only the most recently switched runner is out"],a:1,e:"Rule 5.10.3(a)(xiii) Effect: When the appeal is upheld, each runner who switched is declared out and the head coach is ejected for unsportsmanlike conduct."},
+  {q:"In Co-ed, the infield and outfield positioning requirements are:",o:["Five males anywhere, five females anywhere","Two males and two females in both the infield and outfield; one male and one female as pitcher and catcher","Three males and two females infield; two males and three females outfield","No specific positioning requirements"],a:1,e:"Rule 3.2.2(a)(iii): Co-ed requires two male and two female in both the infield and outfield, with one male and one female as pitcher and catcher."},
+  {q:"A run does NOT score if the third out of the inning is the result of:",o:["A fly ball caught in the outfield","A batter-runner out before touching first base, a force out, or a preceding runner being put out","A tag out on a runner not on base","A runner hit by a batted ball"],a:1,e:"Rule 1.2.5(c): A run does not score if the third out is a batter-runner out before touching first base, a force out, or a preceding runner being put out."},
+  {q:"A pitcher starting the game is credited with a win if they pitched at least how many innings?",o:["2","3","4","5"],a:2,e:"Appendix 6 E(a): A starting pitcher is credited with a win if they pitched at least four innings and their team was in the lead when they were replaced and remains in the lead."},
+  {q:"Which of the following is NOT an option play under the rules?",o:["Catcher obstruction","Use of an illegal glove or mitt","A runner missing a base","An illegal pitcher returned to pitch"],a:2,e:"Rule 5.1.34: Option plays include catcher obstruction, illegal glove, illegal substitution, and illegal pitcher returned to pitch. A runner missing a base is NOT an option play."},
+  {q:"A delayed dead ball is:",o:["A ball declared dead after a short delay","A situation where the ball remains live until the play ends, then the umpire rules dead ball","A ball that becomes dead after touching the ground","A foul ball not immediately called"],a:1,e:"Rule 5.1.13: A delayed dead ball is a game situation in which the ball remains live until the conclusion of a play; when play is completed the umpire rules dead ball and enforces the ruling."},
+  {q:"A fair batted fly ball contacts the fence, deflects off a fielder, and then goes over the fence. The ruling is:",o:["A home run","A two-base award","A foul ball","A three-base award"],a:1,e:"Rule 5.11(b)(i)(3): It is not a home run if a fair batted ball first contacts the fence, deflects off a fielder and then goes over the fence — it is a two-base award."},
+  {q:"A fielder in dead ball territory touches a fair batted ball that WOULD have cleared the fence in fair territory. The ruling is:",o:["Two-base award","Three-base award","Four bases — home run","One-base award"],a:2,e:"Rule 5.5.1(e)(iv) and 5.11(d)(ii): When a fielder in dead ball territory contacts a ball that would have gone over the fence, four bases are awarded — home run."},
+  {q:"A fielder in dead ball territory touches a fair batted ball that would NOT have cleared the fence. Runners are awarded:",o:["One base from time of pitch","Two bases from time of pitch","Three bases","A home run"],a:1,e:"Rule 5.11(b)(i)(4): A two-base award is given when a fielder in dead ball territory contacts a ball that would not have gone over the fence."},
+  {q:"When a coach is ejected, they must provide the Plate Umpire with:",o:["A written apology","The name of the person assuming head coach duties","The team's lineup card","Nothing — the next listed coach takes over automatically"],a:1,e:"Rule 3.4.2(b): An ejected head coach will submit to the Plate Umpire the name of the person who is to assume duties of head coach for the remainder of the game."},
+  {q:"Can a team protest a judgment decision by an umpire?",o:["Yes, any decision can be protested","No — no protest may be considered if based solely on the accuracy of an umpire's judgment","Yes, but only if raised before the next pitch","Only if witnessed by at least two players"],a:1,e:"Rule 1.2.10: No protest may be received or considered if it is based solely on a decision involving the accuracy of judgment by an umpire."},
+  {q:"Umpires may rectify a reversed call that places a player in jeopardy only:",o:["At any time","Before one legal or illegal pitch has been thrown and before all defensive players abandon fair territory","Only between half-innings","Never — a call once made stands"],a:1,e:"Rule 3.6.6(c): Umpires may rectify such a situation only if no legal or illegal pitch has been thrown and all players on the defensive team have not abandoned fair territory."},
+  {q:"After the third out, additional out appeals may be made:",o:["No — no further appeals after three outs","Yes — to remove a run or reinstate the correct batting order","Yes — but only by the manager","Only in the last inning"],a:1,e:"Rule 1.2.5(d) and 1.2.6(c): Additional out appeals may be made after the third out to remove a run(s) or to reinstate the correct batting order."},
+  {q:"The penalty for a second charged offensive conference in the same inning is:",o:["A warning to the offensive team","Ejection of the coach or manager insisting on the second conference","The batter is automatically out","The team loses their turn at bat"],a:1,e:"Rule 5.2(b) Effect: Ejection of the coach or manager insisting on the second charged conference."},
+  {q:"An umpire cannot be changed during a game unless:",o:["The team requests it","They are incapacitated by injury or illness","Both teams agree","The league director orders it"],a:1,e:"Rule 3.6.5: An umpire cannot be changed during a game by the consent of the teams unless they are incapacitated by injury or illness."},
+  {q:"A sacrifice fly is scored when, with fewer than two outs:",o:["Any fly ball is hit to the outfield","The batter scores a runner with a caught fly ball, or a dropped outfield fly where the runner could have scored after the catch","Any time a runner scores from a fly ball","Only when the fly is caught and the runner tags up"],a:1,e:"Appendix 6 C: A sacrifice fly is scored when, with less than two outs, the batter scores a runner with a caught fly ball, or a dropped outfield fly ball where the runner could have scored after the catch."},
+  {q:"A pitcher is charged with a loss when:",o:["They give up more than three runs in one inning","They are replaced when the team is behind and the team fails to tie or gain the lead — regardless of innings pitched","They allow the tying run to score","They pitch fewer than three innings"],a:1,e:"Appendix 6 F: A pitcher is charged with a loss, regardless of innings pitched, if replaced when the team is behind and the team thereafter fails to tie the score or gain the lead."},
+  {q:"When a non-team member enters the playing field and interferes with a live ball, runners are awarded:",o:["One base automatically","The base(s) they would have reached in the umpire's judgment had the interference not occurred","Two bases automatically","The play stands"],a:1,e:"Rule 5.5.1(f) Effect: The ball is dead and runners may advance to the base(s) they would have reached in the umpire's judgment had the interference not occurred."},
+  {q:"In the Run Ahead Rule, if the home team surpasses the run-ahead threshold with a home run in the bottom of the inning:",o:["Only the run-ahead score counts","All runs scored because of the home run count","The game ends — no extra runs count","The home run counts for one run only"],a:1,e:"Rule 1.2.3(b): If in the bottom of the inning the game-ending play is a home run, all runs scored because of the home run shall count."},
+  {q:"A base coach may hold which items while in the coach's box?",o:["Any equipment they choose","A non-electronic, non-reflective scorebook, pen, pencil and/or an indicator — used only for score or record keeping","A tablet for reviewing video","A communication device with the dugout"],a:1,e:"Rule 3.4.3(c): A base coach may hold a non-electronic, non-reflective scorebook, pen, pencil and/or an indicator used only for score or record keeping."},
+  {q:"The Extra Player (EP) rule is:",o:["Always mandatory in slow pitch","Optional — must be declared before the start of the game and used for the entire game","Optional and can be added mid-game","Mandatory in Co-ed only"],a:1,e:"Rule 3.2.4(a)(b): The EP is optional, but if used must be made known prior to the start of the game and must be used for the entire game."},
+  {q:"An ineligible replacement player enters the game. This is treated as:",o:["An unreported substitution","An illegal re-entry","An ejection offence only","An immediate forfeit"],a:1,e:"Rule 3.1.11: An ineligible replacement player entering the game is considered an illegal re-entry."},
+  {q:"After 'Time' is called, who may make a dead ball appeal?",o:["Only the pitcher","Any defensive team member in the infield, with or without possession of the ball (a coach or manager must first step onto the field)","Only the manager or head coach","Only the catcher"],a:1,e:"Rule 1.2.6(b): Any defensive team member in the infield, with or without possession of the ball, may make a dead ball appeal. A coach or manager must first step onto the playing field."},
+  {q:"A fair batted ball passes out of the playing field at a distance LESS than the minimum prescribed dimensions. Runners are awarded:",o:["A home run","Two bases from time of pitch","One base from time of pitch","Three bases"],a:1,e:"Rule 5.11(b)(i)(1): A two-base award is given when a fair batted ball passes out of the playing field at a distance less than the dimensions of a regulation field."}
+]};
+
+let mode='easy',pool=[],idx=0,score=0,answers=[],done=false;
+
+function sel(m){
+  mode=m;
+  ['easy','medium','hard'].forEach(x=>{
+    const b=document.getElementById('btn-'+x);
+    b.className='mode-btn'+(x===m?' a'+x[0]:'');
+  });
+  const titles={easy:'Easy — Everyday Calls',medium:'Medium — Less Common Rules',hard:'Hard — Rare Situations'};
+  const descs={
+    easy:'Things that come up in virtually every game: fair/foul balls, balls and strikes, outs, walks, arc heights and basic base running.',
+    medium:'Rules that matter but occur less often: infield fly, obstruction, interference, double base, conferences and substitutions.',
+    hard:'Complex and rare situations: tiebreaker rules, EP rules, protests, batting out of order, base awards, Co-ed rules and more.'
+  };
+  document.getElementById('home-title').textContent=titles[m];
+  document.getElementById('home-sub').textContent=descs[m];
+  document.getElementById('home-count').textContent=QS[m].length+' questions in pool — 20 drawn at random each round';
+  const sb=document.getElementById('start-btn');
+  sb.style.display='block';
+  sb.className='start-btn s'+m[0];
+}
+
+function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
+
+function startQuiz(){
+  pool=shuffle(QS[mode]).slice(0,20);
+  idx=0;score=0;answers=[];done=false;
+  document.getElementById('home-screen').style.display='none';
+  document.getElementById('results-screen').style.display='none';
+  document.getElementById('quiz-screen').style.display='block';
+  const b=document.getElementById('mode-badge');
+  b.className='badge b'+mode[0];
+  b.textContent=mode.charAt(0).toUpperCase()+mode.slice(1);
+  renderQ();
+}
+
+function renderQ(){
+  done=false;
+  const q=pool[idx];
+  const tot=pool.length;
+  document.getElementById('q-num').textContent='Question '+(idx+1)+' of '+tot;
+  document.getElementById('pbar').style.width=Math.round(idx/tot*100)+'%';
+  document.getElementById('pbar').className='prog-bar pg'+mode[0];
+  document.getElementById('q-text').textContent=q.q;
+  const ob=document.getElementById('opts');ob.innerHTML='';
+  q.o.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt';b.textContent=o;b.onclick=()=>ans(i);
+    ob.appendChild(b);
+  });
+  const fb=document.getElementById('feedback');fb.className='feedback';fb.textContent='';
+  const nb=document.getElementById('next-btn');
+  nb.className='next-btn nb'+mode[0];
+  nb.textContent=idx===tot-1?'See results →':'Next →';
+}
+
+function ans(i){
+  if(done)return;done=true;
+  const q=pool[idx];const ok=i===q.a;
+  if(ok)score++;
+  answers.push({q:q.q,chosen:q.o[i],correct:q.o[q.a],ok});
+  document.querySelectorAll('.opt').forEach((b,j)=>{
+    b.disabled=true;
+    if(j===q.a)b.className='opt correct';
+    else if(j===i)b.className='opt wrong';
+  });
+  const fb=document.getElementById('feedback');
+  fb.textContent=(ok?'✓ Correct! ':'✗ Incorrect. ')+q.e;
+  fb.className='feedback show '+(ok?'fbc':'fbw');
+  document.getElementById('next-btn').className='next-btn nb'+mode[0]+' show';
+}
+
+function nextQ(){idx++;if(idx>=pool.length){showResults();return;}renderQ();}
+
+function showResults(){
+  document.getElementById('quiz-screen').style.display='none';
+  document.getElementById('results-screen').style.display='block';
+  const pct=Math.round(score/pool.length*100);
+  document.getElementById('score-pct').textContent=pct+'%';
+  document.getElementById('score-circle').className='score-circle sc'+mode[0];
+  document.getElementById('s-correct').textContent=score;
+  document.getElementById('s-wrong').textContent=pool.length-score;
+  const msgs=['Keep studying the rulebook!','Getting there — review the explanations.','Solid knowledge!','Excellent — great rules awareness!','Outstanding! You know the rulebook cold.'];
+  document.getElementById('score-msg').textContent=msgs[Math.min(4,Math.floor(pct/20))];
+  document.getElementById('score-detail').textContent=score+' correct out of '+pool.length;
+  const rl=document.getElementById('review-list');rl.innerHTML='';
+  answers.forEach(a=>{
+    const d=document.createElement('div');
+    d.className='review-item '+(a.ok?'riok':'riwrong');
+    d.innerHTML='<div class="ri-q">'+a.q+'</div><div class="ri-a">Your answer: <span class="'+(a.ok?'raok':'rabad')+'">'+a.chosen+'</span>'+(a.ok?'':' · Correct: <span class="raok">'+a.correct+'</span>')+'</div>';
+    rl.appendChild(d);
+  });
+  document.getElementById('pa-btn').className='action-btn pa'+mode[0];
+}
+
+function goHome(){
+  document.getElementById('results-screen').style.display='none';
+  document.getElementById('quiz-screen').style.display='none';
+  document.getElementById('home-screen').style.display='block';
+}
+
+sel('easy');
+</script>
+</body>
+</html>

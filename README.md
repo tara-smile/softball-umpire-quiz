@@ -1,5 +1,9 @@
 # ⚾ Slow Pitch Softball Rules Quiz
 
+### 👉 [Click here to play the quiz](https://tara-smile.github.io/softball-umpire-quiz)
+
+---
+
 A free, self-contained quiz app to help umpires and players brush up on the **WBSC Official Slow Pitch Rules 2022–2025**.
 
 ---
@@ -17,7 +21,7 @@ A free, self-contained quiz app to help umpires and players brush up on the **WB
 
 ## How to play online (no download needed)
 
-If this quiz has been shared with you as a link (e.g. `https://tara-smile.github.io/softball-umpire-quiz`), just open it in any web browser and start playing straight away.
+Open this link in any browser: **https://tara-smile.github.io/softball-umpire-quiz**
 
 ---
 
@@ -27,7 +31,7 @@ You can save the quiz to your own device and play it without an internet connect
 
 ### On a computer (Windows or Mac)
 
-1. Go to the quiz page (ask whoever shared this for the link)
+1. Open the quiz link above
 2. In your browser, press **Ctrl + S** (Windows) or **Cmd + S** (Mac)
 3. Choose **"Webpage, HTML Only"** (not "Complete") and save it somewhere you'll find it — like your Desktop
 4. To play: just double-click the saved file — it opens in your browser like any website
@@ -52,7 +56,7 @@ You can save the quiz to your own device and play it without an internet connect
 
 ## How to download the file from GitHub directly
 
-If you want the raw HTML file from this page:
+If you want the raw HTML file:
 
 1. Click on **`index.html`** in the file list above
 2. Click the **Download raw file** button (the icon with a down arrow, top right of the file preview)
@@ -63,11 +67,9 @@ If you want the raw HTML file from this page:
 
 ## How to share it with your league
 
-The simplest way to share is just to send friends this GitHub link — or the **GitHub Pages** link if it has been set up.
+Send friends this link: **https://tara-smile.github.io/softball-umpire-quiz**
 
-If you want to share the file directly:
-- Email the `index.html` file as an attachment
-- The recipient saves it and double-clicks to open — that's it
+Or share the `index.html` file directly as an email attachment — the recipient just double-clicks to open it.
 
 ---
 
